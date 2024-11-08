@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour {
     public int PlayerScore;
     public string HighScoreName;
     public int HighScore;
-    //public HighScoreList highscores;
+    public List<PlayerData> HighScoreList = new List<PlayerData>();
 
     private void Awake() {
         if (Instance != null) {
@@ -22,22 +22,28 @@ public class GameManager : MonoBehaviour {
     }
 
     [System.Serializable]
-    class SaveData {
+    public class PlayerData {
         public string name;
-        public int highscore;
+        public int score;
+
+        public PlayerData(string playerName, int playerScore) {
+            name = playerName;
+            score = playerScore;
+        }
+    }
+
+    [System.Serializable]
+    class SaveData {
+        public List<PlayerData> players;
     }
 
     public void SaveHighScore() {
-        if (PlayerScore >= HighScore)
-        {
-            SaveData data = new SaveData();
-            data.name = HighScoreName;
-            data.highscore = HighScore;
+        SaveData data = new SaveData();
+        data.players = HighScoreList;
 
-            string json = JsonUtility.ToJson(data);
+        string json = JsonUtility.ToJson(data, true);
 
-            File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
-        }
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
     }
 
     public void LoadData() {
@@ -47,8 +53,7 @@ public class GameManager : MonoBehaviour {
             string json = File.ReadAllText(path);
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
-            HighScoreName = data.name;
-            HighScore = data.highscore;
+            HighScoreList = data.players;
         }
     }
 }
