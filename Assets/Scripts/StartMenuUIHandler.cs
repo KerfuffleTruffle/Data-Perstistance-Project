@@ -11,24 +11,19 @@ using UnityEditor;
 public class StartMenuUIHandler : MonoBehaviour {
 
     public TMP_InputField playerNameInput;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    
+    private void Start() {
+        if (GameManager.Instance != null) {
+            playerNameInput.text = GameManager.Instance.PlayerName;
+        }
     }
 
     public void UpdatePlayerName() {
-       // GameManager.Instance.PlayerName = playerNameInput.text;
+        GameManager.Instance.PlayerName = playerNameInput.text;
     }
 
       public void StartNew() {
-        if (GameManager.Instance.PlayerName != null) {
+        if (GameManager.Instance != null) {
             Debug.Log("name: " + GameManager.Instance.PlayerName);
             SceneManager.LoadScene(1);
         }
