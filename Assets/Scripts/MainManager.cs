@@ -11,12 +11,15 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text HighScoreText;
     public GameObject GameOverText;
 
     private string playerName;
     
     private bool m_Started = false;
     private int m_Points;
+    private int highScore;
+    private string highScoreName;
     
     private bool m_GameOver = false;
 
@@ -25,6 +28,9 @@ public class MainManager : MonoBehaviour
     void Start() {
         // Set player name for text
         playerName = GameManager.Instance.PlayerName;
+        highScore = GameManager.Instance.HighScore;
+        highScoreName = GameManager.Instance.HighScoreName;
+        HighScoreText.text = $"High Score : {highScore} - {highScoreName}";
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -59,10 +65,10 @@ public class MainManager : MonoBehaviour
         }
         else if (m_GameOver) {
             if (Input.GetKeyDown(KeyCode.Space)) {
-                GameManager.Instance.SaveHighScore();
+                SaveHighScore();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             } else if (Input.GetKeyDown(KeyCode.Escape)) {
-                GameManager.Instance.SaveHighScore();
+                SaveHighScore();
                 SceneManager.LoadScene(0);
             }
         }
@@ -71,12 +77,29 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point) {
         m_Points += point;
         ScoreText.text = $"{playerName} Score : {m_Points}";
+
+        if (HighScoreCheck()) {
+            HighScoreText.text = $"New High Score : {m_Points}";
+        }
     }
 
     public void GameOver() {
         m_GameOver = true;
         GameOverText.SetActive(true);
+    }
 
-        // Add call to check high score
+    public void SaveHighScore() {
+        if (HighScoreCheck()) {
+            GameManager.Instance.HighScore = m_Points;
+            GameManager.Instance.HighScoreName = playerName;
+            GameManager.Instance.SaveHighScore();
+        }
+    }
+
+    private bool HighScoreCheck() {
+        if (m_Points >= highScore) {
+            return true;
+        }
+        return false;
     }
 }

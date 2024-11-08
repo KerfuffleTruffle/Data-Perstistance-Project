@@ -31,8 +31,8 @@ public class GameManager : MonoBehaviour {
         if (PlayerScore >= HighScore)
         {
             SaveData data = new SaveData();
-            data.name = PlayerName;
-            data.highscore = PlayerScore;
+            data.name = HighScoreName;
+            data.highscore = HighScore;
 
             string json = JsonUtility.ToJson(data);
 
