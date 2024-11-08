@@ -40,7 +40,11 @@ public class StartMenuUIHandler : MonoBehaviour {
         #if UNITY_EDITOR
             EditorApplication.ExitPlaymode();
         #else 
-            Application.Quite();
+            Application.Quit();
         #endif
+    }
+
+    public void GotoHighScoreScene() {
+        SceneManager.LoadScene(2);
     }
 }

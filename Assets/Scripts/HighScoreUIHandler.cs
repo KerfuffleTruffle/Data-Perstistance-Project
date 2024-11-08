@@ -1,18 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class HighScoreUIHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    public TextMeshProUGUI leaderBoardText;
+    void Start(){
+        PrintLeaderBoard();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void Back() {
+        SceneManager.LoadScene(0);
+    }
+
+    private void PrintLeaderBoard() {
+        if (GameManager.Instance == null) {
+            leaderBoardText.text = "NO GAME MANAGER DETECTED";
+        } else {
+            if (GameManager.Instance.HighScoreList.Count > 0){
+                int i = 1;
+                foreach (var player in GameManager.Instance.HighScoreList) {
+                    leaderBoardText.text += $"{i}. {player.name}  {player.score} \n";
+                    i++;
+                }
+            } else {
+                leaderBoardText.text = "List Empty";
+            }
+        }
     }
 }
