@@ -65,6 +65,7 @@ public class MainManager : MonoBehaviour
         }
         else if (m_GameOver) {
             if (Input.GetKeyDown(KeyCode.Space)) {
+                
                 SaveHighScore();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             } else if (Input.GetKeyDown(KeyCode.Escape)) {
@@ -91,9 +92,9 @@ public class MainManager : MonoBehaviour
     public void SaveHighScore() {
         if (HighScoreCheck()) {
             GameManager.Instance.HighScore = m_Points;
-            GameManager.Instance.HighScoreName = playerName;
-            GameManager.Instance.SaveHighScore();
+            GameManager.Instance.HighScoreName = playerName;    
         }
+        GameManager.Instance.SaveHighScore();
     }
 
     private bool HighScoreCheck() {

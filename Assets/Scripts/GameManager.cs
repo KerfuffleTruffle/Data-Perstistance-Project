@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour {
 
     public void SaveHighScore() {
         SaveData data = new SaveData();
+        SortSaveList();
         data.players = HighScoreList;
 
         string json = JsonUtility.ToJson(data, true);
@@ -54,6 +55,26 @@ public class GameManager : MonoBehaviour {
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
             HighScoreList = data.players;
+            // Set highest score for easy comparison
+            if (HighScoreList.Count > 0) {
+                PlayerData highestScore = HighScoreList[0];
+                HighScoreName = highestScore.name;
+                HighScore = highestScore.score;
+            }
         }
     }
+
+    // Sorts the list in Descending order and restricts number of players included
+    public void SortSaveList() {
+        HighScoreList.Add(new PlayerData(PlayerName, PlayerScore));
+        
+        // Sort list so we can load highest score easily
+        HighScoreList.Sort((player1, player2) => player2.score.CompareTo(player1.score));
+
+        // Restrict amount of players in list 
+        if (HighScoreList.Count > 5) {
+            HighScoreList = HighScoreList.GetRange(0, 5);
+        }
+    }
+
 }
