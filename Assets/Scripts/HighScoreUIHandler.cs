@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 public class HighScoreUIHandler : MonoBehaviour
 {
     public TextMeshProUGUI leaderBoardText;
+    public TextMeshProUGUI leaderBoardPosition;
+    public TextMeshProUGUI leaderBoardName;
+    public TextMeshProUGUI leaderBoardScore;
     void Start(){
         PrintLeaderBoard();
     }
@@ -22,7 +25,9 @@ public class HighScoreUIHandler : MonoBehaviour
             if (GameManager.Instance.HighScoreList.Count > 0){
                 int i = 1;
                 foreach (var player in GameManager.Instance.HighScoreList) {
-                    leaderBoardText.text += $"{i}. {player.name}  {player.score} \n";
+                    leaderBoardPosition.text += $"{i}\n";
+                    leaderBoardName.text += $"{player.name}\n";
+                    leaderBoardScore.text += $"{player.score}\n";
                     i++;
                 }
             } else {
