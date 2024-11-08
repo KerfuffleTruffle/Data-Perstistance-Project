@@ -12,6 +12,8 @@ public class MainManager : MonoBehaviour
 
     public Text ScoreText;
     public GameObject GameOverText;
+
+    private string playerName;
     
     private bool m_Started = false;
     private int m_Points;
@@ -36,6 +38,9 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+
+        playerName = GameManager.Instance.PlayerName;
+        Debug.Log(playerName);
     }
 
     private void Update()
@@ -55,9 +60,10 @@ public class MainManager : MonoBehaviour
         }
         else if (m_GameOver)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
+            if (Input.GetKeyDown(KeyCode.Space)) {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            } else if (Input.GetKeyDown(KeyCode.Escape)) {
+                SceneManager.LoadScene(0);
             }
         }
     }
@@ -65,12 +71,13 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        ScoreText.text = $"{playerName} Score : {m_Points}";
     }
 
-    public void GameOver()
-    {
+    public void GameOver() {
         m_GameOver = true;
         GameOverText.SetActive(true);
+
+        // Add call to check high score
     }
 }
