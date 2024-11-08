@@ -22,8 +22,9 @@ public class MainManager : MonoBehaviour
 
     
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
+        // Set player name for text
+        playerName = GameManager.Instance.PlayerName;
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -39,8 +40,6 @@ public class MainManager : MonoBehaviour
             }
         }
 
-        playerName = GameManager.Instance.PlayerName;
-        Debug.Log(playerName);
     }
 
     private void Update()
@@ -58,18 +57,18 @@ public class MainManager : MonoBehaviour
                 Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
             }
         }
-        else if (m_GameOver)
-        {
+        else if (m_GameOver) {
             if (Input.GetKeyDown(KeyCode.Space)) {
+                GameManager.Instance.SaveHighScore();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             } else if (Input.GetKeyDown(KeyCode.Escape)) {
+                GameManager.Instance.SaveHighScore();
                 SceneManager.LoadScene(0);
             }
         }
     }
 
-    void AddPoint(int point)
-    {
+    void AddPoint(int point) {
         m_Points += point;
         ScoreText.text = $"{playerName} Score : {m_Points}";
     }
